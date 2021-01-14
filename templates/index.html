@@ -1,0 +1,145 @@
+<!Doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[모두의 감기]</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=East+Sea+Dokdo&display=swap" rel="stylesheet">
+
+
+    <style>
+        * {
+        font-family: 'East Sea Dokdo', cursive;
+        }
+
+
+        .login-title {
+            background-image: url("https://www.ancient-origins.net/sites/default/files/field/image/Agesilaus-II-cover.jpg") ;
+            background-size : cover;
+            background-position : center;
+            border-radius : 10px;
+            color : white;
+            text-align : center;
+            padding-top : 40px;
+            width : 300px;
+            height : 200px;
+
+
+            display : flex;
+            flex-direction: column;
+            justify-content : center;
+            align-items: center;
+        }
+        .wrap {
+            width : 300px;
+            margin : 10px auto;
+        }
+        button{
+            margin : 8px 16px 8px 16px;
+        }
+
+    </style>
+
+    <script>
+        function showCoughInfo() {
+           $('#bike-info').empty();
+           $.ajax({
+                  type: "GET", // GET 방식으로 요청한다.
+                  url: "http://apis.data.go.kr/B550928/dissForecastInfoSvc",
+                  data: {}, // 요청하면서 함께 줄 데이터 (GET 요청시엔 비워두세요)
+                  success: function(response){ // 서버에서 준 결과를 response라는 변수에 담음
+                    let rows = response['rentBikeStatus']['row']
+                    for (let i =0 ; i < rows.length; i++){
+                        row= rows[i]
+                        let stationName = row['stationName']
+                        let rackTotCnt = row['rackTotCnt']
+                        let parkingBikeTotCnt = row['parkingBikeTotCnt']
+                        let temp
+                        if (parkingBikeTotCnt < 5) {
+                                 temp = `<tr class = "warning">
+                                        <td>${stationName}</td>
+                                        <td>${rackTotCnt}</td>
+                                        <td>${parkingBikeTotCnt}</td>
+                                    </tr>`
+                        } else {
+                                 temp = `<tr>
+                                        <td>${stationName}</td>
+                                        <td>${rackTotCnt}</td>
+                                        <td>${parkingBikeTotCnt}</td>
+                                    </tr>`
+                        }
+
+
+                         $('#bike-info').append(temp);
+                    }
+
+  }
+})
+        }
+    </script>
+
+
+
+
+
+
+
+
+</head>
+
+<body>
+<h1>[모두의 건강지수]</h1>
+
+<hr/>
+
+<div class="jumbotron">
+    <h1 class="display-4">!</h1>
+    <p class="lead">!!</p>
+    <hr class="my-4">
+    <p>오늘의 서울 강남구의 감기지수는 xx입니다. 천식 지수는 xx입니다.</p>
+    <p>    http://forecast.nhis.or.kr/menu.do 에서 더 자세한 내용을 확인 하실 수 있습니다 </p>
+    <p class="lead">
+        <a class="btn btn-primary btn-lro unit, a simple jumbotron-style component for calling extra attention
+        tog" href="#" role="button">Learn more</a>
+    </p>
+</div>
+
+
+<div class="question-box">
+    <h2></h2>
+    <p>우리 동네의 감기지수 확인을 통해 건강을 챙기세요!</p>
+    <p>업데이트 버튼을 누를 때마다 오늘,내일 모레의 각 지역별 감기지수를 보여줍니다.</p>
+    <button onclick="showBikeInfo()">업데이트</button>
+    <table>
+        <thead>
+        <tr>
+            <td>시도</td>
+            <td>시군구</td>
+            <td>위험도</td>
+        </tr>
+        </thead>
+        <tbody id="bike-info">
+        <tr>
+            <td>서울</td>
+            <td>노원구</td>
+            <td>주의</td>
+        </tr>
+        <tr>
+            <td>경기</td>
+            <td>하남시</td>
+            <td>관심</td>
+        </tr>
+        <tr>
+            <td>서울</td>
+            <td>강남구</td>
+            <td>경고</td>
+        </tr>
+        </tbody>
+    </table>
+
+   
+
+</div>
+
